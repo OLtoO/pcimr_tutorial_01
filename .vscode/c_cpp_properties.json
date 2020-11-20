@@ -1,0 +1,22 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/otto/catkin_ws/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/otto/catkin_ws/src/beginner_tutorials/include/**",
+        "/home/otto/catkin_ws/src/rto_core/rto_local_move/include/**",
+        "/home/otto/catkin_ws/src/rto_core/rto_local_planner/include/**",
+        "/home/otto/catkin_ws/src/rto_core/rto_node/include/**",
+        "/home/otto/catkin_ws/src/rto_core/rto_safety/include/**",
+        "/home/otto/catkin_ws/src/rto_core/rto_teleop/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ]
+}
