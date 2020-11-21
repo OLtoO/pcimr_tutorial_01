@@ -20,16 +20,27 @@ def callback(data, call):
 
     #Position
     else:
-        global scan_data
-        scan_data = data.ranges
+        global sc_data
+        sc_data = data.ranges
 
 #init_pos service call
-rospy.wait_for_service('init_pos', timeout=10)
-init_pos = rospy.ServiceProxy('init_pos', InitPos)
-init_pos(2, 0)
+
+def pos_init():
+    rospy.wait_for_service('init_pos')
+    try:
+        init_pos_srv = rospy.ServiceProxy('init_pos', InitPos)
+        resp = init_pos_srv(2, 0)
+        if resp:
+            print(f"Position initialized to 2, 0")
+        else:
+            print("Position initialization service returned False.")
+    except Exception as e:
+        print(f"Couldn't initialize position. Reason {e}")
+
+#pos_init()
 
 #publish to /move
-mover = rospy.Publisher('/move', String)
+mover = rospy.Publisher('/move', String, queue_size=10)
 
 #subscriber /scan topic
 scan = rospy.Subscriber('/scan', LaserScan, callback, 0)
@@ -40,15 +51,17 @@ pos = rospy.Subscriber('/robot_pos', Point, callback, 1)
 
 
 rospy.init_node('planner', anonymous=True)
-
+pos_init()
 subscrate = rospy.Rate(1)
 
+#first option: move North
+#second option: move East
 while not rospy.is_shutdown():
     subscrate.sleep()
     print(pos_data)
-    if(scan_data[2]>1.0):
+    if(sc_data[2]>1.0):
         mover.publish('N')
-    elif(scan_data[3]>1.0):
+    elif(sc_data[3]>1.0):
         mover.publish('E')
     else:
         print('Goal reached')
